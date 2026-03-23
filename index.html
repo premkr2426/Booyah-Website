@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booyah Central — Free Fire Tournaments</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg:      #04080f;
+  --card:    #0a1120;
+  --card2:   #0d1628;
+  --border:  rgba(79,110,247,0.15);
+  --accent:  #4f6ef7;
+  --accent2: #6c3fff;
+  --cyan:    #00d4ff;
+  --gold:    #f5a623;
+  --green:   #22c55e;
+  --red:     #ef4444;
+  --text:    #e2e8f0;
+  --dim:     #64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;}
+
+/* ── Animated BG ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(79,110,247,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 90% 80%, rgba(108,63,255,0.12) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(79,110,247,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,110,247,0.04) 1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;z-index:0;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(4,8,15,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;
+  letter-spacing:2px;
+  background:linear-gradient(90deg,var(--accent),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nav-logo span{color:var(--gold);-webkit-text-fill-color:var(--gold);}
+.nav-dl{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;border-radius:10px;
+  padding:9px 20px;font-family:'Orbitron',sans-serif;
+  font-size:0.65rem;font-weight:700;letter-spacing:1px;
+  cursor:pointer;text-decoration:none;
+  box-shadow:0 4px 16px rgba(79,110,247,0.35);
+  transition:transform 0.2s,box-shadow 0.2s;
+  display:flex;align-items:center;gap:7px;
+}
+.nav-dl:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(79,110,247,0.5);}
+
+/* ── HERO ── */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:100px 24px 60px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);
+  border-radius:20px;padding:6px 16px;
+  font-size:0.7rem;font-weight:800;letter-spacing:2px;
+  color:var(--gold);text-transform:uppercase;
+  margin-bottom:28px;
+  animation:fadeDown 0.6s both;
+}
+.hero-badge .dot{width:7px;height:7px;background:var(--gold);border-radius:50%;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.hero h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2.2rem,9vw,4rem);
+  font-weight:900;line-height:1.1;
+  letter-spacing:-1px;
+  margin-bottom:8px;
+  animation:fadeDown 0.6s 0.1s both;
+}
+.hero h1 .line1{
+  background:linear-gradient(135deg,#fff 0%,var(--cyan) 60%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  display:block;
+}
+.hero h1 .line2{
+  background:linear-gradient(135deg,var(--gold) 0%,#ffcc44 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  display:block;font-size:0.6em;letter-spacing:4px;
+  margin-top:4px;
+}
+
+.hero-sub{
+  font-size:clamp(0.9rem,3vw,1.1rem);color:var(--dim);
+  max-width:500px;line-height:1.7;margin-bottom:40px;font-weight:600;
+  animation:fadeDown 0.6s 0.2s both;
+}
+.hero-sub strong{color:var(--text);}
+
+.hero-btns{
+  display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+  animation:fadeDown 0.6s 0.3s both;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;border-radius:14px;
+  padding:16px 32px;font-family:'Orbitron',sans-serif;
+  font-size:0.8rem;font-weight:700;letter-spacing:1px;
+  cursor:pointer;text-decoration:none;
+  box-shadow:0 6px 32px rgba(79,110,247,0.4);
+  transition:all 0.2s;display:flex;align-items:center;gap:10px;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(79,110,247,0.55);}
+.btn-secondary{
+  background:transparent;color:var(--text);
+  border:1.5px solid var(--border);border-radius:14px;
+  padding:16px 32px;font-family:'Nunito',sans-serif;
+  font-size:0.9rem;font-weight:700;
+  cursor:pointer;text-decoration:none;
+  transition:all 0.2s;display:flex;align-items:center;gap:8px;
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── STATS BAR ── */
+.stats-bar{
+  position:relative;z-index:1;
+  display:flex;justify-content:center;gap:0;
+  flex-wrap:wrap;
+  margin:0 auto;max-width:700px;padding:0 24px 60px;
+}
+.stat-item{
+  flex:1;min-width:140px;
+  text-align:center;padding:28px 20px;
+  border-top:1px solid var(--border);
+  position:relative;
+}
+.stat-item:not(:last-child)::after{
+  content:'';position:absolute;right:0;top:20%;bottom:20%;
+  width:1px;background:var(--border);
+}
+.stat-val{
+  font-family:'Orbitron',sans-serif;font-size:1.7rem;font-weight:900;
+  background:linear-gradient(135deg,var(--gold),#ffcc44);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:4px;
+}
+.stat-lbl{font-size:0.7rem;color:var(--dim);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:1;padding:60px 24px;}
+.section-inner{max-width:700px;margin:0 auto;}
+.section-tag{
+  display:inline-block;
+  background:rgba(79,110,247,0.08);border:1px solid rgba(79,110,247,0.25);
+  border-radius:20px;padding:5px 14px;
+  font-size:0.65rem;font-weight:800;letter-spacing:2px;
+  color:var(--accent);text-transform:uppercase;margin-bottom:16px;
+}
+.section-title{
+  font-family:'Rajdhani',sans-serif;font-size:clamp(1.6rem,5vw,2.2rem);
+  font-weight:700;margin-bottom:8px;
+}
+.section-sub{color:var(--dim);font-size:0.85rem;font-weight:600;margin-bottom:36px;line-height:1.6;}
+
+/* ── MODES GRID ── */
+.modes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+.mode-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:20px 18px;
+  transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s;
+  position:relative;overflow:hidden;
+}
+.mode-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity 0.2s;
+}
+.mode-card:hover{transform:translateY(-4px);}
+.mode-card:hover::before{opacity:1;}
+
+.mode-card.blue::before{background:linear-gradient(90deg,var(--accent),var(--cyan));}
+.mode-card.blue:hover{box-shadow:0 8px 32px rgba(79,110,247,0.2);border-color:rgba(79,110,247,0.35);}
+.mode-card.gold::before{background:linear-gradient(90deg,var(--gold),#ffcc44);}
+.mode-card.gold:hover{box-shadow:0 8px 32px rgba(245,166,35,0.2);border-color:rgba(245,166,35,0.35);}
+.mode-card.green::before{background:linear-gradient(90deg,var(--green),#4ade80);}
+.mode-card.green:hover{box-shadow:0 8px 32px rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.35);}
+.mode-card.purple::before{background:linear-gradient(90deg,#a855f7,#c084fc);}
+.mode-card.purple:hover{box-shadow:0 8px 32px rgba(168,85,247,0.2);border-color:rgba(168,85,247,0.35);}
+.mode-card.cyan::before{background:linear-gradient(90deg,var(--cyan),#67e8f9);}
+.mode-card.cyan:hover{box-shadow:0 8px 32px rgba(0,212,255,0.2);border-color:rgba(0,212,255,0.35);}
+.mode-card.orange::before{background:linear-gradient(90deg,#fb923c,#fbbf24);}
+.mode-card.orange:hover{box-shadow:0 8px 32px rgba(251,146,60,0.2);border-color:rgba(251,146,60,0.35);}
+
+.mode-icon{font-size:1.8rem;margin-bottom:10px;}
+.mode-name{font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;margin-bottom:4px;}
+.mode-desc{font-size:0.75rem;color:var(--dim);font-weight:600;line-height:1.5;}
+
+/* ── WITHDRAWALS ── */
+.withdrawal-list{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  overflow:hidden;
+}
+.withdrawal-header{
+  padding:18px 22px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  background:rgba(79,110,247,0.04);
+}
+.withdrawal-header .live-dot{
+  width:8px;height:8px;background:var(--green);border-radius:50%;
+  box-shadow:0 0 8px var(--green);animation:blink 1.5s infinite;
+}
+.withdrawal-header span{font-size:0.8rem;font-weight:800;color:var(--dim);letter-spacing:1px;text-transform:uppercase;}
+.withdrawal-item{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 22px;border-bottom:1px solid rgba(79,110,247,0.07);
+  animation:slideIn 0.5s both;
+  transition:background 0.2s;
+}
+.withdrawal-item:last-child{border-bottom:none;}
+.withdrawal-item:hover{background:rgba(79,110,247,0.04);}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:none;}}
+.w-avatar{
+  width:38px;height:38px;border-radius:11px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:0.85rem;color:#fff;flex-shrink:0;
+}
+.w-name{font-weight:700;font-size:0.88rem;flex:1;}
+.w-mode{font-size:0.68rem;color:var(--dim);font-weight:600;margin-top:1px;}
+.w-amount{
+  font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:700;
+  color:var(--green);
+}
+
+/* ── HOW TO PLAY ── */
+.steps-list{display:flex;flex-direction:column;gap:14px;}
+.step-card{
+  display:flex;align-items:flex-start;gap:18px;
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:20px 22px;
+  transition:transform 0.2s,border-color 0.2s;
+}
+.step-card:hover{transform:translateX(6px);border-color:rgba(79,110,247,0.3);}
+.step-num{
+  width:44px;height:44px;border-radius:13px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;
+  color:#fff;flex-shrink:0;
+  box-shadow:0 4px 16px rgba(79,110,247,0.3);
+}
+.step-body{}
+.step-title{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:4px;}
+.step-desc{font-size:0.8rem;color:var(--dim);font-weight:600;line-height:1.6;}
+
+/* ── CTA ── */
+.cta{
+  position:relative;z-index:1;
+  padding:60px 24px 80px;text-align:center;
+}
+.cta-inner{
+  max-width:600px;margin:0 auto;
+  background:var(--card2);
+  border:1px solid var(--border);border-radius:28px;
+  padding:48px 32px;
+  position:relative;overflow:hidden;
+}
+.cta-inner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--cyan),var(--gold));
+}
+.cta-glow{
+  position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(79,110,247,0.15),transparent 70%);
+  pointer-events:none;
+}
+.cta h2{
+  font-family:'Orbitron',sans-serif;font-size:clamp(1.3rem,4vw,1.8rem);
+  font-weight:900;margin-bottom:12px;
+  background:linear-gradient(135deg,#fff,var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.cta p{color:var(--dim);font-size:0.88rem;font-weight:600;margin-bottom:32px;line-height:1.7;}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;border-radius:16px;
+  padding:18px 40px;font-family:'Orbitron',sans-serif;
+  font-size:0.85rem;font-weight:700;letter-spacing:1px;
+  cursor:pointer;text-decoration:none;
+  box-shadow:0 8px 40px rgba(79,110,247,0.45);
+  transition:all 0.2s;
+}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 14px 50px rgba(79,110,247,0.6);}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  text-align:center;padding:24px;
+  border-top:1px solid var(--border);
+  color:var(--dim);font-size:0.75rem;font-weight:600;
+}
+footer a{color:var(--accent);text-decoration:none;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:none;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s,transform 0.6s;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ── DIVIDER ── */
+.divider{
+  max-width:700px;margin:0 auto;
+  height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);
+}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BOOYAH<span>•</span>CENTRAL</div>
+  <a href="#download" class="nav-dl"><i class="fas fa-download"></i> DOWNLOAD</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    🏆 Daily Free Fire Tournaments
+  </div>
+  <h1>
+    <span class="line1">Play. Win.</span>
+    <span class="line2">Get Paid.</span>
+  </h1>
+  <p class="hero-sub">
+    India ka <strong>sabse trusted</strong> Free Fire tournament platform.<br>
+    Low entry fee, fast payouts, 100% fair play. 🔥
+  </p>
+  <div class="hero-btns">
+    <a href="#download" class="btn-primary">
+      <i class="fas fa-download"></i> Download App
+    </a>
+    <a href="#how" class="btn-secondary">
+      <i class="fas fa-play-circle"></i> How to Play
+    </a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar reveal">
+  <div class="stat-item">
+    <div class="stat-val" id="statUsers">0</div>
+    <div class="stat-lbl">Total Players</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val" id="statMatches">0</div>
+    <div class="stat-lbl">Matches Played</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val" id="statWinnings">₹0</div>
+    <div class="stat-lbl">Total Paid Out</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- MODES -->
+<section id="modes">
+  <div class="section-inner reveal">
+    <div class="section-tag">🎮 Game Modes</div>
+    <div class="section-title">Tournament Modes</div>
+    <div class="section-sub">Apna favourite mode chunno aur join karo tournament!</div>
+    <div class="modes-grid">
+      <div class="mode-card blue">
+        <div class="mode-icon">💀</div>
+        <div class="mode-name">BR SURVIVAL</div>
+        <div class="mode-desc">Last man standing wins. Placement se prize milta hai.</div>
+      </div>
+      <div class="mode-card cyan">
+        <div class="mode-icon">🗺️</div>
+        <div class="mode-name">BR FULL MAP</div>
+        <div class="mode-desc">Kill + placement dono count karte hain. Per kill coins milte hain.</div>
+      </div>
+      <div class="mode-card gold">
+        <div class="mode-icon">⚔️</div>
+        <div class="mode-name">CLASH SQUAD 1VS1</div>
+        <div class="mode-desc">1v1 duel — best player jeetega. Fast aur intense!</div>
+      </div>
+      <div class="mode-card purple">
+        <div class="mode-icon">🐺</div>
+        <div class="mode-name">LONE WOLF 1VS1</div>
+        <div class="mode-desc">Limited ammo, pure skill. Gun attribute ON.</div>
+      </div>
+      <div class="mode-card orange">
+        <div class="mode-icon">🛡️</div>
+        <div class="mode-name">CLASH SQUAD 2VS2</div>
+        <div class="mode-desc">Team up with a partner and dominate the squad battle.</div>
+      </div>
+      <div class="mode-card blue">
+        <div class="mode-icon">🌙</div>
+        <div class="mode-name">LONE WOLF 2VS2</div>
+        <div class="mode-desc">2v2 intense duels with limited ammo and pure teamwork.</div>
+      </div>
+      <div class="mode-card gold">
+        <div class="mode-icon">🏆</div>
+        <div class="mode-name">CS CHALLENGERS</div>
+        <div class="mode-desc">Points based on rounds won. All skills allowed!</div>
+      </div>
+      <div class="mode-card green">
+        <div class="mode-icon">🎯</div>
+        <div class="mode-name">CS HEADSHOT</div>
+        <div class="mode-desc">Sirf headshot kills count karti hain. Aim improve karo!</div>
+      </div>
+      <div class="mode-card cyan">
+        <div class="mode-icon">🎮</div>
+        <div class="mode-name">FREE MATCHES</div>
+        <div class="mode-desc">Free entry — koi coins nahi chahiye. Practice & win!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WITHDRAWALS -->
+<section id="withdrawals">
+  <div class="section-inner reveal">
+    <div class="section-tag">💸 Live Payouts</div>
+    <div class="section-title">Recent Withdrawals</div>
+    <div class="section-sub">Real players, real money. Har roz payouts ho rahe hain!</div>
+    <div class="withdrawal-list">
+      <div class="withdrawal-header">
+        <div class="live-dot"></div>
+        <span>Live Withdrawal Feed</span>
+      </div>
+      <div class="withdrawal-item" style="animation-delay:0.05s">
+        <div class="w-avatar">R</div>
+        <div class="flex-1">
+          <div class="w-name">Rahul_FF</div>
+          <div class="w-mode">BR Full Map • 1st Place</div>
+        </div>
+        <div class="w-amount">+₹500</div>
+      </div>
+      <div class="withdrawal-item" style="animation-delay:0.10s">
+        <div class="w-avatar" style="background:linear-gradient(135deg,#a855f7,#6c3fff)">S</div>
+        <div class="flex-1">
+          <div class="w-name">SKGamers</div>
+          <div class="w-mode">CS Challengers • Winner</div>
+        </div>
+        <div class="w-amount">+₹300</div>
+      </div>
+      <div class="withdrawal-item" style="animation-delay:0.15s">
+        <div class="w-avatar" style="background:linear-gradient(135deg,#f5a623,#fb923c)">P</div>
+        <div class="flex-1">
+          <div class="w-name">ProSniper_7</div>
+          <div class="w-mode">CS Headshot • Top Kill</div>
+        </div>
+        <div class="w-amount">+₹250</div>
+      </div>
+      <div class="withdrawal-item" style="animation-delay:0.20s">
+        <div class="w-avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a)">A</div>
+        <div class="flex-1">
+          <div class="w-name">Arjun_Battle</div>
+          <div class="w-mode">BR Survival • 2nd Place</div>
+        </div>
+        <div class="w-amount">+₹150</div>
+      </div>
+      <div class="withdrawal-item" style="animation-delay:0.25s">
+        <div class="w-avatar" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">K</div>
+        <div class="flex-1">
+          <div class="w-name">KingFF_Pro</div>
+          <div class="w-mode">Lone Wolf 1VS1 • Winner</div>
+        </div>
+        <div class="w-amount">+₹200</div>
+      </div>
+      <div class="withdrawal-item" style="animation-delay:0.30s">
+        <div class="w-avatar" style="background:linear-gradient(135deg,#ef4444,#dc2626)">V</div>
+        <div class="flex-1">
+          <div class="w-name">Vikas_Gamer</div>
+          <div class="w-mode">Clash Squad 2VS2 • 1st</div>
+        </div>
+        <div class="w-amount">+₹400</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW TO PLAY -->
+<section id="how">
+  <div class="section-inner reveal">
+    <div class="section-tag">📖 Guide</div>
+    <div class="section-title">How to Play</div>
+    <div class="section-sub">Sirf 4 steps mein shuru karo aur jeeto!</div>
+    <div class="steps-list">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">📲 App Download Karo</div>
+          <div class="step-desc">Neeche se Booyah Central app download karo aur install karo. Bilkul free hai!</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">📝 Register Karo</div>
+          <div class="step-desc">Apna naam, Free Fire UID aur mobile number se account banao. 30 second ka kaam!</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">🏆 Tournament Join Karo</div>
+          <div class="step-desc">Apna favourite mode chunno, Play Coins se entry karo aur room ID lo. Match khelo!</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">💰 Jeeto aur Withdraw Karo</div>
+          <div class="step-desc">Prize jeeto, wallet mein aayega. UPI se seedha bank mein withdraw karo! Fast payouts guaranteed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WATCH & EARN -->
+<section id="watch-earn">
+  <div class="section-inner reveal">
+    <div class="section-tag">📺 Watch & Earn</div>
+    <div class="section-title">Coins Kamao — Bilkul Free!</div>
+    <div class="section-sub">Ad dekho, Earn Coins pao. Unhe tournaments mein use karo ya wallet mein convert karo!</div>
+
+    <div style="background:linear-gradient(135deg,#0d0020,#160035,#0a0018);border:1px solid rgba(108,63,255,0.25);border-radius:24px;padding:32px 24px;text-align:center;position:relative;overflow:hidden;">
+      <!-- Top glow line -->
+      <div style="position:absolute;top:0;left:10%;right:10%;height:2px;background:linear-gradient(90deg,transparent,#a855f7,#6c3fff,transparent);"></div>
+
+      <!-- Floating emoji -->
+      <div style="font-size:3.5rem;margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(168,85,247,0.6));">📺</div>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;
+        background:linear-gradient(135deg,#a855f7,#c084fc,#e879f9);
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+        margin-bottom:8px;">Watch Ads → Earn Coins</div>
+
+      <div style="color:#94a3b8;font-size:0.85rem;font-weight:600;margin-bottom:28px;line-height:1.7;">
+        Roz <strong style="color:#e2e8f0;">5 ads</strong> dekho aur <strong style="color:#f5a623;">25 Earn Coins</strong> kamao — FREE!<br>
+        Coins se tournaments join karo ya prizes redeem karo.
+      </div>
+
+      <!-- How it works cards -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;">
+        <div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);border-radius:16px;padding:18px 10px;">
+          <div style="font-size:1.8rem;margin-bottom:8px;">▶️</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:700;color:#e2e8f0;margin-bottom:4px;">Watch Ad</div>
+          <div style="font-size:0.7rem;color:#64748b;font-weight:600;">30 second ka short ad dekho</div>
+        </div>
+        <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:16px;padding:18px 10px;">
+          <div style="font-size:1.8rem;margin-bottom:8px;">🪙</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:700;color:#f5a623;margin-bottom:4px;">+5 Coins</div>
+          <div style="font-size:0.7rem;color:#64748b;font-weight:600;">Har ad ke baad coins milenge</div>
+        </div>
+        <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:16px;padding:18px 10px;">
+          <div style="font-size:1.8rem;margin-bottom:8px;">🏆</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:700;color:#22c55e;margin-bottom:4px;">Play Free</div>
+          <div style="font-size:0.7rem;color:#64748b;font-weight:600;">Coins se tournament join karo</div>
+        </div>
+      </div>
+
+      <!-- Daily limit bar -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 20px;margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;">Daily Limit</span>
+          <span style="font-family:'Orbitron',sans-serif;font-size:0.8rem;font-weight:700;color:#a855f7;">5 Ads / Day</span>
+        </div>
+        <div style="height:6px;background:rgba(168,85,247,0.15);border-radius:6px;overflow:hidden;">
+          <div style="width:60%;height:100%;background:linear-gradient(90deg,#a855f7,#e879f9);border-radius:6px;
+            box-shadow:0 0 10px rgba(168,85,247,0.5);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;">
+          <span style="font-size:0.65rem;color:#64748b;font-weight:600;">0 coins</span>
+          <span style="font-size:0.65rem;color:#f5a623;font-weight:700;">Max: 25 coins/day 🪙</span>
+        </div>
+      </div>
+
+      <!-- Coin types -->
+      <div style="display:flex;gap:12px;">
+        <div style="flex:1;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.25);border-radius:14px;padding:14px 12px;">
+          <div style="font-size:1.3rem;margin-bottom:4px;">🪙</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:0.75rem;font-weight:700;color:#f5a623;margin-bottom:4px;">EARN COINS</div>
+          <div style="font-size:0.68rem;color:#64748b;font-weight:600;line-height:1.5;">Watch ads se milte hain.<br>Prizes & rewards ke liye.</div>
+        </div>
+        <div style="flex:1;background:rgba(79,110,247,0.08);border:1px solid rgba(79,110,247,0.25);border-radius:14px;padding:14px 12px;">
+          <div style="font-size:1.3rem;margin-bottom:4px;">💎</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:0.75rem;font-weight:700;color:#4f6ef7;margin-bottom:4px;">PLAY COINS</div>
+          <div style="font-size:0.68rem;color:#64748b;font-weight:600;line-height:1.5;">Tournaments join karne ke liye.<br>Add money karke lo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA / DOWNLOAD -->
+<div class="cta reveal" id="download">
+  <div class="cta-inner">
+    <div class="cta-glow"></div>
+    <div style="font-size:2.5rem;margin-bottom:16px;">🚀</div>
+    <h2>Ready to Play & Earn?</h2>
+    <p>Abhi download karo aur apna pehla tournament join karo.<br>
+    <strong style="color:var(--text)">1000 Play Coins FREE</strong> milenge signup pe!</p>
+   <a href="Booyah-Central.apk" download="Booyah-Central.apk" class="cta-btn" id="downloadBtn">
+      <i class="fas fa-download"></i>
+      Download Booyah Central
+    </a>
+    <div style="margin-top:20px;font-size:0.72rem;color:var(--dim);">
+      <i class="fab fa-android"></i> Android 5.0+ &nbsp;•&nbsp; Free Download &nbsp;•&nbsp; ~5MB
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:10px;">
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.8rem;font-weight:900;
+      background:linear-gradient(90deg,var(--accent),var(--cyan));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+      BOOYAH CENTRAL
+    </span>
+  </div>
+  <div>Made with 🔥 for Free Fire Players &nbsp;•&nbsp; <a href="#">Privacy Policy</a> &nbsp;•&nbsp; <a href="#">Contact</a></div>
+</footer>
+
+<script>
+// ── Animated counters ──
+function animateCount(el, target, prefix, suffix, duration) {
+  let start = 0, step = target / (duration / 16);
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.floor(start).toLocaleString('en-IN') + suffix;
+    if (start >= target) clearInterval(timer);
+  }, 16);
+}
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Trigger counters when stats visible
+      if (e.target.classList.contains('stats-bar')) {
+        setTimeout(() => {
+          animateCount(document.getElementById('statUsers'),   5000,   '',  '+',  1800);
+          animateCount(document.getElementById('statMatches'), 25000,  '',  '+',  2000);
+          animateCount(document.getElementById('statWinnings'),993989, '₹', '',   2200);
+        }, 300);
+      }
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Withdrawal auto-scroll ──
+const withdrawals = [
+  { name: 'Rahul_FF',     mode: 'BR Full Map • 1st Place',       amount: '₹500', color: 'linear-gradient(135deg,#4f6ef7,#6c3fff)' },
+  { name: 'SKGamers',     mode: 'CS Challengers • Winner',        amount: '₹300', color: 'linear-gradient(135deg,#a855f7,#6c3fff)' },
+  { name: 'ProSniper_7',  mode: 'CS Headshot • Top Kill',         amount: '₹250', color: 'linear-gradient(135deg,#f5a623,#fb923c)' },
+  { name: 'Arjun_Battle', mode: 'BR Survival • 2nd Place',        amount: '₹150', color: 'linear-gradient(135deg,#22c55e,#16a34a)' },
+  { name: 'KingFF_Pro',   mode: 'Lone Wolf 1VS1 • Winner',        amount: '₹200', color: 'linear-gradient(135deg,#06b6d4,#0891b2)' },
+  { name: 'Vikas_Gamer',  mode: 'Clash Squad 2VS2 • 1st',         amount: '₹400', color: 'linear-gradient(135deg,#ef4444,#dc2626)' },
+  { name: 'Neha_Pro',     mode: 'BR Full Map • Per Kill',         amount: '₹180', color: 'linear-gradient(135deg,#f43f5e,#be123c)' },
+  { name: 'GunMaster_9',  mode: 'CS Challengers • Runner Up',     amount: '₹120', color: 'linear-gradient(135deg,#fbbf24,#d97706)' },
+];
+let wIdx = 0;
+setInterval(() => {
+  const list = document.querySelector('.withdrawal-list');
+  const items = list.querySelectorAll('.withdrawal-item');
+  const w = withdrawals[wIdx % withdrawals.length];
+  const newItem = document.createElement('div');
+  newItem.className = 'withdrawal-item';
+  newItem.style.animationDelay = '0s';
+  newItem.innerHTML = `
+    <div class="w-avatar" style="background:${w.color}">${w.name[0]}</div>
+    <div class="flex-1">
+      <div class="w-name">${w.name}</div>
+      <div class="w-mode">${w.mode}</div>
+    </div>
+    <div class="w-amount">+${w.amount}</div>`;
+  // Remove last, add new at top
+  if(items.length >= 6) items[items.length-1].remove();
+  list.insertBefore(newItem, items[0]);
+  wIdx++;
+}, 3000);
+</script>
+</body>
+</html>
